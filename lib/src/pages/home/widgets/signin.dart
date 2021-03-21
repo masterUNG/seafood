@@ -9,6 +9,7 @@ import 'package:seafood_app/src/pages/home/states/my_service_shopper.dart';
 import 'package:seafood_app/src/pages/home/utility/my_constant.dart';
 import 'package:seafood_app/src/pages/home/utility/my_style.dart';
 import 'package:seafood_app/src/pages/home/utility/normal_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -48,13 +49,19 @@ class _SignInState extends State<SignIn> {
   Future<Null> checkAuthen() async {
     String path =
         '${MyConstant().domain}/seafood/getUserWhereUser.php?isAdd=true&user=$user';
-    await Dio().get(path).then((value) {
+    await Dio().get(path).then((value) async {
       if (value.toString() == 'null') {
         normalDialog(context, 'No $user in my Database');
       } else {
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromJson(item);
           if (password == model.password) {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            preferences.setString('id', model.id);
+            preferences.setString('user', model.user);
+            preferences.setString('name', model.name);
+
             switch (model.chooseType) {
               case 'buyer':
                 Navigator.pushAndRemoveUntil(
@@ -64,15 +71,17 @@ class _SignInState extends State<SignIn> {
                     ),
                     (route) => false);
                 break;
-                 case 'shopper':
+              case 'shopper':
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyServiceShopper(userModel: model,),
+                      builder: (context) => MyServiceShopper(
+                        userModel: model,
+                      ),
                     ),
                     (route) => false);
                 break;
-                 case 'rider':
+              case 'rider':
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

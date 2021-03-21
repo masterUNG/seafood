@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:seafood_app/models/user_model.dart';
 import 'package:seafood_app/src/pages/home/utility/my_constant.dart';
 import 'package:seafood_app/src/pages/home/utility/my_style.dart';
@@ -46,7 +48,9 @@ class _ShowInfoShopperState extends State<ShowInfoShopper> {
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddInformaion(userModel: userModel,),
+                builder: (context) => AddInformaion(
+                  userModel: userModel,
+                ),
               )).then((value) => readUser()),
           child: Text('Edit')),
       body: Center(
@@ -68,7 +72,16 @@ class _ShowInfoShopperState extends State<ShowInfoShopper> {
               ? MyStyle().showProgress()
               : userModel.lat.isEmpty
                   ? Center(child: Text('No Lat, Lng'))
-                  : Text('Have Data'),
+                  : GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                          double.parse(userModel.lat),
+                          double.parse(userModel.lng),
+                        ),
+                        zoom: 16,
+                      ),
+                      onMapCreated: (controller) {},
+                    ),
         ),
       );
 
@@ -76,9 +89,11 @@ class _ShowInfoShopperState extends State<ShowInfoShopper> {
     return Container(
       width: 250,
       height: 250,
-      child: Image(
-        image: AssetImage('assets/images/image.png'),
-      ),
+      child: userModel.urlimage.isEmpty
+          ? Image(
+              image: AssetImage('assets/images/image.png'),
+            )
+          : Image.network('${MyConstant().domain}${userModel.urlimage}'),
     );
   }
 }

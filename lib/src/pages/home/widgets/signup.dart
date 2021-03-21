@@ -76,15 +76,22 @@ class _SignUpState extends State<SignUp> {
   Future<Null> registerThresd() async {
     String apiCheckUser =
         '${MyConstant().domain}/seafood/getUserWhereUser.php?isAdd=true&user=$user';
-    await Dio().get(apiCheckUser).then((value) {
+    await Dio().get(apiCheckUser).then((value) async {
       if (value.toString() == 'null') {
+        String apiInsert =
+            '${MyConstant().domain}/seafood/insertUser.php?isAdd=true&chooseType=$chooseType&name=$name&user=$user&password=$password';
+        await Dio().get(apiInsert).then((value) {
+          print('#### value = $value');
+          if (value.toString() == 'true') {
+            Navigator.pop(context);
+          } else {
+            normalDialog(context, 'Error Please Try Again');
+          }
+        });
       } else {
         normalDialog(context, 'User Dulicape ? Please Change User');
       }
     });
-
-    String apiInsert =
-        '${MyConstant().domain}/seafood/insertUser.php?isAdd=true&chooseType=$chooseType&name=$name&user=$user&password=$password';
   }
 
   Widget userRadio() => Row(
