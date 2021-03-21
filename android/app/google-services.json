@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1084502844451",
+    "project_id": "seafoodapp-9d28b",
+    "storage_bucket": "seafoodapp-9d28b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084502844451:android:ef3e92bd2ffa9123c5fd96",
+        "android_client_info": {
+          "package_name": "login.myapp.seafood_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084502844451-e51kkvd2ufdqv1b8uo47dpq33u3gl3c8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUEE4HturPv192xdT7DEzvwXw46thiryQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084502844451-e51kkvd2ufdqv1b8uo47dpq33u3gl3c8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
